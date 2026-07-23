@@ -122,7 +122,7 @@ The application works on:
 
 ## 📷 Preview
 
-<img width="900" src="/WeatherAppScreenshot.png" alt="Weather App Preview">
+<img width="700" src="/WeatherAppScreenshot.png" alt="Weather App Preview">
 
 *(Replace with your project screenshot.)*
 
