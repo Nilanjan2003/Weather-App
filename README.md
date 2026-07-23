@@ -36,7 +36,7 @@ Weather-App/
 │── index.html
 │── style.css
 │── script.js
-└── README.md
+
 ```
 
 ---
@@ -122,9 +122,7 @@ The application works on:
 
 ## 📷 Preview
 
-<img width="700" src="/WeatherAppScreenshot.png" alt="Weather App Preview">
-
-*(Replace with your project screenshot.)*
+![Calculator Preview](./WeatherAppScreenshot.png)
 
 ---
 
