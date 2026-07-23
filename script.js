@@ -1,6 +1,10 @@
 
 const API_KEY = "6a5c2ddd9d8d71b40c2eafbe2bf32c5b";
 
+const cityInput = document.getElementById("cityInput");
+const suggestions = document.getElementById("suggestions");
+let selectedIndex = -1;
+
 document.getElementById("searchBtn").addEventListener("click", () => {
     const city = document.getElementById("cityInput").value.trim();
 
@@ -9,6 +13,53 @@ document.getElementById("searchBtn").addEventListener("click", () => {
     }
 });
 
+async function fetchSuggestions(query) {
+
+    if (query.length < 2) {
+        suggestions.innerHTML = "";
+        return;
+    }
+
+    const url = `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${API_KEY}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    suggestions.innerHTML = "";
+    selectedIndex = -1;
+
+    data.forEach(city => {
+        const item = document.createElement("div");
+        item.className = "suggestion-item";
+        item.textContent =
+            `${city.name}, ${city.state ? city.state + ", " : ""}${city.country}`;
+
+        item.onclick = () => {
+            cityInput.value = `${city.name}, ${city.country}`;
+            suggestions.innerHTML = "";
+            fetchWeather(city.name);
+
+        };
+
+        suggestions.appendChild(item);
+
+    });
+
+}
+
+function updateSelection() {
+
+    const items = document.querySelectorAll(".suggestion-item");
+
+    items.forEach((item, index) => {
+        if (index === selectedIndex) {
+            item.style.background = "#2563eb";
+        }
+        else {
+            item.style.background = "";
+        }
+
+    });
+
+}
 
 async function fetchWeather(city) {
     const currentUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
@@ -124,6 +175,47 @@ async function fetchWeather(city) {
             `<p>${error.message}</p>`;
     }
 }
+
+cityInput.addEventListener("input", (e) => {
+    fetchSuggestions(e.target.value);
+});
+
+cityInput.addEventListener("keydown", (e) => {
+    const items = document.querySelectorAll(".suggestion-item");
+    if (!items.length) return;
+
+    if (e.key === "ArrowDown") {
+        e.preventDefault();
+        selectedIndex++;
+
+        if (selectedIndex >= items.length)
+            selectedIndex = 0;
+        updateSelection();
+
+    }
+
+    else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        selectedIndex--;
+        if (selectedIndex < 0)
+            selectedIndex = items.length - 1;
+        updateSelection();
+
+    }
+
+    else if (e.key === "Enter") {
+        e.preventDefault();
+        if (selectedIndex >= 0)
+            items[selectedIndex].click();
+
+    }
+});
+
+document.addEventListener("click", (e) => {
+    if (!cityInput.contains(e.target) && !suggestions.contains(e.target)) {
+        suggestions.innerHTML = "";
+    }
+});
 
 window.addEventListener("DOMContentLoaded", () => {
     fetchWeather("Kolkata");

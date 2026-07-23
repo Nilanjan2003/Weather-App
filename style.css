@@ -92,6 +92,7 @@ body::before {
     padding: clamp(4px, 1vmin, 8px);
     margin-bottom: clamp(8px, 2.5vmin, 22px);
     flex-shrink: 0;
+    position: relative;
 }
 
 .search-bar input {
@@ -124,6 +125,32 @@ body::before {
 .search-bar button:hover {
     transform: scale(1.08);
     box-shadow: 0 0 20px #3b82f6;
+}
+
+/* Suggestions */
+
+.suggestions {
+    position: absolute;
+    width: 100%;
+    top: 100%;
+    left: 0;
+    background: #111827;
+    border-radius: 12px;
+    margin-top: 8px;
+    overflow: hidden;
+    z-index: 999;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, .35);
+}
+
+.suggestion-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    color: white;
+    transition: .25s;
+}
+
+.suggestion-item:hover {
+    background: #2563eb;
 }
 
 /* Header */
