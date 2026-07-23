@@ -29,6 +29,10 @@ async function fetchWeather(city) {
         const currentData = await currentRes.json();
         const forecastData = await forecastRes.json();
 
+        // Create date & time according to the selected city's timezone
+        const utc = Date.now() + new Date().getTimezoneOffset() * 60000;
+        const cityDate = new Date(utc + currentData.timezone * 1000);
+
         const weatherInfo = document.getElementById("weatherInfo");
 
         // One forecast card per day
@@ -62,16 +66,17 @@ async function fetchWeather(city) {
 </div>
 
 <div class="date-time">
-    ${new Date().toLocaleDateString("en-US", {
+    ${cityDate.toLocaleDateString("en-US", {
             weekday: "long",
             day: "numeric",
             month: "short",
             year: "numeric"
         })}
     •
-    ${new Date().toLocaleTimeString([], {
+    ${cityDate.toLocaleTimeString("en-US", {
             hour: "2-digit",
-            minute: "2-digit"
+            minute: "2-digit",
+            hour12: true
         })}
 </div>
 
